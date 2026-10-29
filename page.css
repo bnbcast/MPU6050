@@ -1,0 +1,913 @@
+:root {
+        --bg: #0e2a5a;
+        --ink: #e9f0ff;
+        --mute: #a4b8dc;
+        --line: rgba(255, 255, 255, 0.14);
+        --amber: #ffc857;
+        --x: #ff7a7a;
+        --y: #6ee7a0;
+        --z: #74b9ff;
+        --panel: rgba(5, 16, 40, 0.6);
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font:
+          400 17px/1.6 "IBM Plex Sans",
+          system-ui,
+          sans-serif;
+        background-color: var(--bg);
+        background-image:
+          linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 36px 36px;
+        background-attachment: fixed;
+      }
+
+      a {
+        color: var(--amber);
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible {
+        outline: 3px solid var(--amber);
+        outline-offset: 3px;
+      }
+
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 18px 0;
+        font-size: 15px;
+      }
+
+      h1,
+      h2 {
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+        line-height: 1.08;
+        margin: 0;
+      }
+
+      h1 {
+        font-size: clamp(2.2rem, 5.4vw, 4rem);
+        font-weight: 800;
+        max-width: 15ch;
+      }
+
+      h2 {
+        font-size: clamp(1.5rem, 3vw, 2.1rem);
+        font-weight: 600;
+        margin-bottom: 14px;
+      }
+
+      .lead {
+        max-width: 62ch;
+        color: var(--mute);
+        font-size: 1.12rem;
+        margin: 16px 0 8px;
+      }
+
+      .status {
+        display: inline-block;
+        margin: 6px 0 26px;
+        padding: 6px 12px;
+        border: 1px solid var(--amber);
+        color: var(--amber);
+        border-radius: 999px;
+        font-size: 14px;
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 16px;
+      }
+
+      #view {
+        height: 420px;
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        background: radial-gradient(
+          circle at 50% 40%,
+          rgba(120, 170, 255, 0.25),
+          rgba(5, 16, 40, 0.7)
+        );
+        position: relative;
+        overflow: hidden;
+      }
+
+      #view canvas {
+        display: block;
+        touch-action: none;
+        cursor: grab;
+      }
+
+      #view p {
+        position: absolute;
+        left: 12px;
+        bottom: 8px;
+        margin: 0;
+        font-size: 13px;
+        color: var(--mute);
+        pointer-events: none;
+      }
+
+      .ctl {
+        display: grid;
+        grid-template-columns: auto 1fr 4.2ch;
+        gap: 6px 12px;
+        align-items: center;
+        margin-top: 14px;
+      }
+
+      .ctl label {
+        font-size: 15px;
+      }
+
+      .ctl output {
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+        color: var(--amber);
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--amber);
+      }
+
+      .btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      button {
+        font:
+          600 15px "IBM Plex Sans",
+          sans-serif;
+        color: var(--ink);
+        background: transparent;
+        border: 1px solid var(--ink);
+        border-radius: 6px;
+        padding: 8px 14px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .read {
+        display: grid;
+        grid-template-columns: auto repeat(3, 1fr);
+        gap: 4px 10px;
+        align-items: baseline;
+      }
+
+      .read b {
+        font-weight: 600;
+        color: var(--mute);
+        font-size: 14px;
+      }
+
+      .read span {
+        font:
+          600 1.55rem/1.2 "Bricolage Grotesque",
+          sans-serif;
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+      }
+
+      .read i {
+        font-style: normal;
+        font-size: 13px;
+        text-align: right;
+        color: var(--mute);
+      }
+
+      .dx {
+        color: var(--x);
+      }
+
+      .dy {
+        color: var(--y);
+      }
+
+      .dz {
+        color: var(--z);
+      }
+
+      .unit {
+        grid-column: 1/-1;
+        font-size: 13px;
+        color: var(--mute);
+        margin: -2px 0 8px;
+      }
+
+      #conv {
+        margin: 12px 0 0;
+        font-size: 14px;
+        color: var(--amber);
+        min-height: 2.7em;
+      }
+
+      #term {
+        margin: 14px 0 0;
+        height: 190px;
+        overflow: hidden;
+        background: #04101f;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 10px;
+        font:
+          12px/1.55 ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+        color: #cfe0ff;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+
+      .charts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .charts canvas {
+        width: 100%;
+        height: 150px;
+        display: block;
+      }
+
+      .charts p {
+        margin: 0 0 8px;
+        font-size: 14px;
+        color: var(--mute);
+      }
+
+      section {
+        padding: 54px 0 0;
+      }
+
+      section p {
+        max-width: 68ch;
+      }
+
+      .cols {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 26px;
+      }
+
+      .cols h3 {
+        margin: 0 0 4px;
+        font-size: 1.05rem;
+      }
+
+      .cols p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--mute);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+        margin: 10px 0;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--mute);
+        font-weight: 600;
+      }
+
+      .tw {
+        overflow-x: auto;
+      }
+
+      pre {
+        margin: 14px 0;
+        padding: 16px;
+        background: #04101f;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        overflow-x: auto;
+        font:
+          13px/1.6 ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+        color: #cfe0ff;
+      }
+
+      .ok {
+        color: var(--y);
+      }
+
+      .no {
+        color: var(--amber);
+      }
+
+      footer {
+        padding: 60px 0 40px;
+        color: var(--mute);
+        font-size: 14px;
+      }
+
+      /* ESP32 Control Center section */
+
+      .cc-kicker {
+        margin-bottom: 10px;
+        color: var(--amber);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .cc-intro {
+        max-width: 76ch;
+        color: var(--mute);
+        margin: 0 0 22px;
+      }
+
+      .cc-overview {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .cc-overview h3,
+      .cc-subsection h3 {
+        margin: 0 0 8px;
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+        font-size: 1.2rem;
+      }
+
+      .cc-project-copy p {
+        margin: 0 0 14px;
+        color: var(--mute);
+      }
+
+      .cc-points {
+        margin: 0 0 18px;
+        padding-left: 20px;
+      }
+
+      .cc-points li {
+        padding: 3px 0;
+      }
+
+      .cc-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .cc-tags span,
+      .cc-pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 9px;
+        color: var(--mute);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .cc-demo-panel {
+        min-width: 0;
+      }
+
+      .cc-demo-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+
+      .cc-pill {
+        flex-shrink: 0;
+        color: var(--amber);
+        border-color: rgba(255, 200, 87, 0.5);
+        letter-spacing: 0.05em;
+      }
+
+      .cc-demo-note {
+        margin: 0 0 14px;
+        color: var(--mute);
+        font-size: 13px;
+      }
+
+      .cc-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .cc-metric {
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 11px;
+        background: rgba(4, 16, 31, 0.45);
+      }
+
+      .cc-metric small {
+        display: block;
+        color: var(--mute);
+        font-size: 12px;
+      }
+
+      .cc-metric strong {
+        display: block;
+        margin-top: 4px;
+        font:
+          600 1.25rem/1.2 "Bricolage Grotesque",
+          sans-serif;
+        overflow-wrap: anywhere;
+      }
+
+      .cc-divider {
+        height: 1px;
+        margin: 16px 0;
+        background: var(--line);
+      }
+
+      .cc-control-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .cc-control-copy small {
+        display: block;
+        color: var(--mute);
+        font-size: 12px;
+      }
+
+      .cc-led-state {
+        color: var(--y);
+        font-weight: 600;
+      }
+
+      .cc-led-state.is-off {
+        color: var(--mute);
+      }
+
+      .cc-demo-button {
+        border-color: var(--amber);
+        color: var(--amber);
+      }
+
+      .cc-log-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: baseline;
+        margin-bottom: 8px;
+      }
+
+      .cc-log-title strong {
+        font-size: 14px;
+      }
+
+      .cc-log-title span {
+        color: var(--mute);
+        font-size: 12px;
+      }
+
+      .cc-log {
+        max-height: 148px;
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 8px 10px;
+        background: #04101f;
+        color: #cfe0ff;
+        font:
+          12px/1.65 ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+        overflow-wrap: anywhere;
+      }
+
+      .cc-log-entry {
+        display: block;
+      }
+
+      .cc-log-entry .cc-log-ok {
+        color: var(--y);
+      }
+
+      .cc-log-entry .cc-log-muted {
+        color: var(--mute);
+      }
+
+      .cc-small-button {
+        margin-top: 8px;
+        padding: 5px 9px;
+        font-size: 12px;
+        border-color: var(--line);
+        color: var(--mute);
+      }
+
+      .cc-subsection {
+        margin-top: 30px;
+      }
+
+      .cc-subsection > p {
+        color: var(--mute);
+        margin-top: 0;
+      }
+
+      .cc-feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .cc-feature {
+        border: 1px solid var(--line);
+        background: rgba(5, 16, 40, 0.38);
+        border-radius: 8px;
+        padding: 16px;
+        min-width: 0;
+      }
+
+      .cc-feature .cc-feature-num {
+        color: var(--amber);
+        font:
+          600 13px "Bricolage Grotesque",
+          sans-serif;
+      }
+
+      .cc-feature h3 {
+        margin-top: 7px;
+        font-size: 1.03rem;
+      }
+
+      .cc-feature p {
+        margin: 0;
+        color: var(--mute);
+        font-size: 14px;
+      }
+
+      .cc-flow {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        counter-reset: flow;
+      }
+
+      .cc-flow-step {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: rgba(5, 16, 40, 0.38);
+        min-width: 0;
+      }
+
+      .cc-flow-step::before {
+        counter-increment: flow;
+        content: "0" counter(flow);
+        display: block;
+        color: var(--amber);
+        margin-bottom: 8px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .cc-flow-step strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .cc-flow-step span {
+        display: block;
+        color: var(--mute);
+        font-size: 13px;
+      }
+
+      .cc-api-table code,
+      .cc-code-inline {
+        color: var(--amber);
+        font:
+          13px ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+        overflow-wrap: anywhere;
+      }
+
+      .cc-api-table td:first-child {
+        white-space: nowrap;
+      }
+
+      .cc-note-box {
+        margin-top: 12px;
+        padding: 13px 15px;
+        border: 1px dashed rgba(255, 200, 87, 0.55);
+        border-radius: 7px;
+        color: var(--mute);
+        font-size: 14px;
+      }
+
+      .cc-note-box strong {
+        color: var(--amber);
+      }
+
+      .cc-sample-json {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        margin-top: 8px;
+      }
+
+      .cc-split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .cc-list {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--mute);
+      }
+
+      .cc-list li {
+        padding: 4px 0;
+      }
+
+      .cc-list strong {
+        color: var(--ink);
+      }
+
+      .cc-separation {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .cc-separation article {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+      }
+
+      .cc-separation h4 {
+        margin: 0 0 6px;
+        font-size: 15px;
+      }
+
+      .cc-separation p {
+        margin: 0;
+        color: var(--mute);
+        font-size: 14px;
+      }
+
+      /* Technology stack and UI design system */
+
+      .ts-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 16px 0 22px;
+      }
+
+      .ts-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .ts-card {
+        min-width: 0;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(5, 16, 40, 0.38);
+      }
+
+      .ts-card h3 {
+        margin: 0 0 7px;
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+        font-size: 1.05rem;
+      }
+
+      .ts-card p {
+        margin: 0;
+        color: var(--mute);
+        font-size: 14px;
+      }
+
+      .ts-label,
+      .ts-card .ts-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--amber);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .ts-swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin: 14px 0 18px;
+      }
+
+      .ts-swatch {
+        overflow: hidden;
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: rgba(5, 16, 40, 0.5);
+      }
+
+      .ts-swatch-color {
+        height: 52px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .ts-swatch-copy {
+        padding: 9px;
+      }
+
+      .ts-swatch-copy strong,
+      .ts-swatch-copy code {
+        display: block;
+        overflow-wrap: anywhere;
+      }
+
+      .ts-swatch-copy strong {
+        font-size: 13px;
+      }
+
+      .ts-swatch-copy code {
+        margin-top: 3px;
+        color: var(--mute);
+        font-size: 11px;
+      }
+
+      .ts-token-table code,
+      .ts-inline-code {
+        color: var(--amber);
+        font:
+          13px ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+        overflow-wrap: anywhere;
+      }
+
+      .ts-font-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .ts-font-sample {
+        padding: 15px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: rgba(5, 16, 40, 0.38);
+        min-width: 0;
+      }
+
+      .ts-font-sample .ts-sample-heading {
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+        font-size: 1.4rem;
+        line-height: 1.1;
+        margin-bottom: 8px;
+      }
+
+      .ts-font-sample .ts-sample-body {
+        color: var(--mute);
+        font-size: 14px;
+      }
+
+      .ts-code-sample {
+        font:
+          12px/1.65 ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+        overflow-wrap: anywhere;
+      }
+
+      .ts-small-note {
+        color: var(--mute);
+        font-size: 13px;
+      }
+
+      @media (max-width: 860px) {
+        .stage,
+        .charts,
+        .cols,
+        .cc-overview,
+        .cc-split {
+          grid-template-columns: 1fr;
+        }
+
+        .cc-feature-grid,
+        .ts-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cc-flow {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        #view {
+          height: 340px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .cc-feature-grid,
+        .cc-flow,
+        .cc-separation,
+        .ts-grid,
+        .ts-font-card {
+          grid-template-columns: 1fr;
+        }
+
+        #view[data-error]::after {
+          content: attr(data-error);
+          position: absolute;
+          left: 12px;
+          right: 12px;
+          top: 12px;
+          z-index: 1;
+          color: var(--amber);
+        }
+
+        .btns button.on {
+          border-color: var(--amber);
+          color: var(--amber);
+        }
+
+        .ts-swatch-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cc-demo-head {
+          flex-direction: column;
+        }
+
+        .cc-api-table td:first-child {
+          white-space: normal;
+        }
+      }
