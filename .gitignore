@@ -1,3 +1,6 @@
 node_modules/
 dist/
 index.original.html
+.env
+.env.*
+!.env.example

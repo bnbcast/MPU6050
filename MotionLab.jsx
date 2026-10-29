@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Breadcrumb from "../../src/shared/Breadcrumb.jsx";
+import Breadcrumb from "./Breadcrumb.jsx";
 
 const axes = ["x", "y", "z"];
 const colors = ["#ff7a7a", "#6ee7a0", "#74b9ff"];
